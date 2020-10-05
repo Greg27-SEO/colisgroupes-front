@@ -1,0 +1,9 @@
+
+design MessageComponent ==> DONE
+acces to commande authenticated (fill User -> Actually empty) ==> DONE
+design menuCommande
+getting/sorting trajets
+design Connexion/Inscription
+add authentication in app component header
+design adminComponent
+Validation forms

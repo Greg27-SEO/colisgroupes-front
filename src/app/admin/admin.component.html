@@ -1,0 +1,155 @@
+<div class="layout">
+  <div class="menu">
+    <div class="titleContainer">
+      <span class="title">Colis Groupés</span><br>
+      <span class="subtitle green">Administration</span>
+    </div>
+    <ul class="menuAction">
+      <li (click)="trajetChosen = null">Trajets / Commandes</li>
+      <li>Utilisateurs</li>
+      <li class="logout" (click)="logout()">Déconnexion</li>
+    </ul>
+    <a href="mailto:izriouil@gmail.com" class="green">
+    <small>Signaler un bug..</small>
+    </a>
+  </div>
+  <div class="administration">
+    <h2>Trajets</h2>
+    <button class="add right slideB" (click)="switch()">
+      <ng-container  *ngIf="!addingMode">
+        <fa-icon [icon]="iconPlus"></fa-icon>&nbsp;&nbsp;
+        Ajouter un trajet
+      </ng-container>
+      <ng-container *ngIf="addingMode">
+        <fa-icon [icon]="iconMinus"></fa-icon>&nbsp;&nbsp;
+        Annuler
+      </ng-container>
+    </button>
+    <h4 class="green">Administration des trajets</h4>
+    <hr>
+    <ng-container *ngIf="!trajetChosen && !addingMode" data-aos="fade-up" data-aos-duration="1000">
+      <div>
+      </div>
+      <div class="contenu">
+        <div class="filtre">
+          <div class="sticky">
+            <span>Date:</span>
+            <div class="filterDate">
+              <input (change)="filterByDate()" id="date" type="date" [(ngModel)]="dateFilter" [min]='today'>
+            </div>
+            <!-- <hr style="border: 1px dashed lightgrey;"> -->
+            <div class="sort">
+              <input [(ngModel)]="sortEnAttente" type="checkbox" id="sort" (change)="sort()" [disabled]="batch.loading">&nbsp;
+              <label for="sort">En attente de validation</label>
+            </div>
+          </div>
+        </div>
+        <ul class="list" infiniteScroll [infiniteScrollDistance]="0" [infiniteScrollThrottle]="50"
+          (scrolled)="nextBatch()">
+          <li class="headerList" style="border-bottom: 3px solid black;background:none; cursor:default;">
+            <div>
+              <span>Depart</span>&nbsp;
+              <fa-icon [icon]="iconArrow"></fa-icon>&nbsp;
+              <span>Arrivé</span>
+            </div>
+            <div>
+              <span>Date</span>
+            </div>
+            <div>
+              Status
+            </div>
+            <div style="border:0px">
+              Actions
+            </div>
+          </li>
+        
+          <li *ngFor="let trajet of trajets; let i=index" [ngClass]="{'lastOne': i + 1 == 10}" >
+            <div (click)="trajetChosen = trajet;">
+              <span>{{trajet.villeDepart}}</span>&nbsp;
+              <fa-icon [icon]="iconArrow"></fa-icon>&nbsp;
+              <span>{{trajet.villeDestination}}</span><br>
+              <ng-container *ngIf="trajet.extra != null">
+                <span style="color:darkturquoise" data-aos="zoom-out"
+                  data-aos-duration="1000">({{trajet.extra.enAttente[0]}} demandes de validation)</span>
+              </ng-container>
+              <!-- <ng-container *ngIf="loadingExtra">
+                <div class="lds-ellipsis">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </ng-container> -->
+
+            </div >
+            <div (click)="trajetChosen = trajet;">
+              <span>{{trajet.date | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div (click)="trajetChosen = trajet;">
+              <!-- <ng-container *ngIf="loadingExtra">
+                <div class="lds-ellipsis">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </ng-container> -->
+              <ng-container *ngIf="trajet.extra != null">
+                <ng-container *ngIf="!trajet.isFull">Ouvert</ng-container>
+                <ng-container *ngIf="trajet.isFull"> <span class="red">Complet</span></ng-container>
+                <br>
+                <div class="progress-bar">
+                  <span class="bar">
+                    <span class="progress"
+                      [style.width]="((trajet.extra.valide[1] / trajet.capacityPoids)*100).toFixed(2)+'%'"></span>
+                  </span>
+                </div>
+                <span class="right">
+                  <span style="color:darkturquoise">{{ ((trajet.extra.valide[1] / trajet.capacityPoids)*100).toFixed(2) }}%</span>&nbsp;-&nbsp;<span>{{(trajet.extra.valide[3]).toFixed(2)}}€</span>
+                </span>
+              </ng-container>
+            </div>
+            <div class="actions" style="border:0; place-self: center">
+              <!-- <div class="edit" (click) ="editTrajet(trajet,i)"> <fa-icon  [icon]="iconEdit" color="blue" size="2x"></fa-icon></div> -->
+              <div class="delete"  mwlConfirmationPopover [popoverTitle]="'Confirmation'" [popoverMessage]="'Message'" placement="bottom" (confirm)="deleteTrajet(trajet,i)"> <fa-icon [icon]="iconDelete" size="2x"></fa-icon></div>
+            </div>
+          </li>
+
+          <ng-container *ngIf="batch.hasNext">
+            <div *ngIf="!batch.loading" class="loadingMore" data-aos="fade-up" data-aos-duration="200"
+              data-aos-anchor=".lastOne">
+              <div class="loadMore">
+                <small>
+                  Faire défiler pour charger plus
+                </small>
+                <p class="bounce">
+                  <fa-icon [icon]="loadMoreIcon" size="2x"></fa-icon>
+                </p>
+              </div>
+            </div>
+            <div *ngIf="batch.loading" class="loading">
+              <div class="lds-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="trajets.length > 0 && !batch.loading && !batch.hasNext">
+            <small class="empty"  style="opacity: 0.8;">
+              Ceci est la liste compléte des trajets prévues pour le moment...
+            </small>
+          </ng-container>
+          <ng-container *ngIf="trajets.length == 0 ">
+            <p class="empty" style="opacity: 0.8;">
+              Aucune trajet enregistrée pour le moment...
+            </p>
+          </ng-container>
+        </ul>
+      </div>
+    </ng-container>
+    <app-admin-trajet *ngIf="trajetChosen && !addingMode" [(trajet)] = "trajetChosen" data-aos="fade-up" data-aos-duration="1000">
+    </app-admin-trajet>
+    <app-add-trajet *ngIf="addingMode" (done)="addingReturn($event)" data-aos="fade-up" data-aos-duration="1000" [(trajet)] = "trajetToEdit"></app-add-trajet>
+
+  </div>
+</div>

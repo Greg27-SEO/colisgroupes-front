@@ -1,0 +1,128 @@
+div {
+  padding: 30px;
+}
+
+.form {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  line-height: 1.2;
+}
+
+.ng-autocomplete {
+  width: auto;
+}
+
+#grille {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* border: 1px solid red; */
+  padding-top:0px;
+}
+
+#grille > div {
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 10px;
+  align-self: start;
+}
+
+#grille > div > span {
+  grid-column: 1 / 4;
+}
+
+#grille > div > div {
+  padding: 10px;
+  grid-column: 1 / 4;
+}
+
+#grille > div > div > fa-icon {
+  cursor: pointer;
+  grid-column: 1 / 4;
+  float: right;
+}
+#grille > div > div > fa-icon:first-child {
+  color: turquoise;
+  margin-left: 10px;
+}
+#grille > div > div > fa-icon:last-child {
+  color: red;
+}
+
+#tranches {
+  grid-column: 1 / 3;
+}
+
+.calendar {
+  padding-top: 0px;
+  max-width: 80%;
+  place-self: center;
+}
+.estimation {
+  place-self: center;
+  text-align: center;
+  border: 1px dashed #4083a09f;
+  padding: 40px;
+}
+
+.estimation > .label {
+  text-transform: uppercase;
+}
+
+.estimation > .blue {
+  font-size: xx-large;
+}
+
+input {
+  width: calc(100% - 20px);
+  border: 2px solid darkgrey;
+  padding: 10px;
+  margin-top:10px;
+}
+
+.dates {
+  padding: 0;
+  margin: 10px;
+  list-style: none;
+  color:#4084a0;
+  font-size: small;
+}
+
+button {
+  background: none;
+  border: 2px solid #4084a0;
+  font: inherit;
+  line-height: 1;
+  margin: 15px;
+  padding: 10px 40px;
+  transition: 0.25s;
+  color: #4084a0;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.blue {
+  color: #4084a0;
+}
+
+.slideB {
+  color: #4084a0;
+}
+
+button:hover,
+button:focus {
+  color: white;
+  box-shadow: inset 14em 0 0 0 #4084a0;
+
+}
+
+button:disabled {
+  cursor:not-allowed;
+  opacity: 0.5;
+}
+
+.is-invalid {
+  border: 2px solid #660606;
+}

@@ -1,0 +1,279 @@
+
+
+div {
+  padding:30px;
+}
+
+button {
+  background: none;
+  border: 2px solid #C7F465;
+  font: inherit;
+  line-height: 1;
+  margin: 5px;
+  padding: 10px;
+  transition: 0.25s;
+  color:#C7F465;
+}
+
+.slide {
+  color: #C7F465;
+}
+
+button:hover,
+button:focus {
+  color: white;
+  box-shadow: inset 14em 0 0 0 #C7F465;
+
+}
+
+.headerTrajet {
+  display:grid;
+  background-color:#181717;
+  color:white;
+  grid-template-columns: 1fr 2fr;
+  margin-top:-8px;
+}
+
+.headerTrajet > div{
+  padding: 10px;
+}
+
+.villes {
+  font-size: xx-large;
+  line-height: 1.5;
+}
+
+.etatTrajet {
+  min-width: 235px;
+  float: right;
+  transform: scale(0.8);
+  margin-top: 15px;
+}
+
+.center {
+  width: 90%;
+  padding: 10px;
+  text-align: center;
+}
+
+/*
+// Bar ============================================ */
+.progress-bar {
+  border-radius: 5px;
+  overflow: hidden;
+
+}
+
+.progress-bar span {
+  display: block;
+}
+
+.bar {
+  background: rgba(255, 255, 255, 0.075);
+  ;
+}
+
+.progress {
+  /* animation: loader 2s ease forwards; */
+  /* // Change the animation fill mode 'infinite' to 'forwards' to stop the animation from repeating. */
+  background: #C7F465;
+  color: #fff;
+  padding: 5px;
+  width: 0%;
+  border-radius: 5px;
+  transition: 2s ease;
+}
+
+.contenu {
+  padding: 30px;
+  display: grid;
+  /* Filtre */
+  /* grid-template-columns: 20% 80%; */
+  grid-template-columns: 100%;
+  grid-gap: 10p;
+}
+
+.list {
+  width: 100%;
+  padding: 0px;
+  margin: 0;
+}
+
+.list>li {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  /* grid-gap: 10px; */
+  padding: 10px;
+  font-size: small;
+  background-color: #181717;
+  box-shadow: 0px 0px 05px 0px #656565;
+  border-radius: 10px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgb(24, 23, 23) 20%);
+  transition: background-color 1.5s;
+  margin-bottom: 20px;
+}
+
+.list>li:hover {
+  background-color: rgba(4, 224, 208, 1);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.user {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 8px;
+  padding-left: 50px;
+}
+
+
+.adresses > div {
+  padding:15px;
+}
+
+.colis {
+  grid-column: 1 / 3;
+  /* display: grid;
+  grid-template-columns: 80% 20%; */
+
+}
+
+.commande {
+  color:white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.commande .green {
+  /* color:#255EFFD6; */
+  font-weight: bold;
+}
+
+.commande hr {
+  width: 100%;
+}
+
+.loading , .shipping {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.commande div {
+  padding:10px;
+}
+
+.actions > button {
+  width: 100%;
+}
+
+.etat {
+  margin:15px 0px;
+}
+
+.yes {
+  color: lightgreen;
+  transition: .3s ease-in-out;
+}
+
+.yes:hover {
+  transform: scale(2)
+}
+
+.no {
+  color: lightcoral;
+  transition: .3s ease-in-out;
+}
+
+.no:hover {
+  transform: scale(2);
+}
+
+.validateCommande {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
+.validateCommande > div {
+  cursor:pointer;
+}
+
+.collapsible {
+  cursor: pointer;
+}
+
+.pactive,
+.mactive .collapsible:hover {
+  color: darken(2);
+}
+
+.content {
+  /* padding: 20px; */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.nonactive {
+  display: none;
+}
+
+#colisRecap {
+  border-collapse: collapse;
+  font-size: small;
+  margin: 25px auto;
+}
+
+#colisRecap td,
+#colisRecap th {
+  border: 1px solid #999;
+  padding: 8px;
+}
+
+#colisRecap tr:nth-child(even) {
+  background-color: #2c2a2a;
+}
+
+#colisRecap tr:hover {
+  background-color: #080606;
+}
+
+#colisRecap tr:last-child {
+  background-color: #181717;
+}
+
+#colisRecap tr:last-child:hover {
+  background-color: #181717;
+}
+
+#colisRecap th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #33cccc;
+  color: white;
+  font-weight: bold;
+}
+
+#colisRecap .lastone {
+  border: 0px;
+  border-top: 1px solid #999;
+}
+
+.loadingMore {
+  left: 0;
+}
+
+.loadMore {
+  left: -230px;
+}
+
+.lds-ripple div {
+  border: 4px solid black;
+}
+
+

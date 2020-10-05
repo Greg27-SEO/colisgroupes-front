@@ -1,0 +1,244 @@
+<div class="container">
+  <!-- -->
+  <div class="description" id="trajetDescription"  [@triggerShown]="(trajetChosen == null) ?'show':'hidden'">
+    <h1>Trajets<small class="green">.</small></h1>
+    <p>Nos équipes veillent à vous organiser des trajets à des prix avantageux et compétitifs, il vous suffit de choisir parmi cette liste le trajet qui vous convient et entamer la réservation en <a href="/contact" class="green">un seul clic</a>.</p>
+    <p>Si aucun trajet ne vous convient, vous pouvez faire une commande personnalisée...</p>
+  </div>
+  <div class="descriptionCommande" id="commandeDescription" [@triggerShown]="(trajetChosen == null || (commande && commande.submited)) ?'hidden':'show'">
+    <h1>Commande<small class="green">.</small></h1>
+    <p>Veuillez renseigner plus d'informations sur votre commande:</p>
+    <small><span class="red">*</span> Champs obligatoire</small>
+  </div>
+  <div class="descriptionCommande" id="recapDescription" [@triggerShown]="(commande && commande.submited) ?'show':'hidden'">
+    <h1>Récapitulatif<small class="green">.</small></h1>
+    <p>Veuillez vérifier et confirmer les informations saisies</p>
+  </div>
+  <div infiniteScroll [infiniteScrollDistance]="0" [infiniteScrollThrottle]="50" (scrolled)="onScroll()"
+    *ngIf="commande == null || !commande.submited" [@trajet] class="trajets">
+    <ul  class="list" id="listTrajets">
+
+      <div class="sort" id=sort>
+        <ng-container *ngIf="trajetChosen != null" >
+          <button class="back" (click)="returnToList()" [@triggerShown]="(trajetChosen == null) ?'hidden':'show'">
+            <fa-icon [icon]="returnIcon"></fa-icon>
+            Retour à la liste
+          </button>
+        </ng-container>
+        <ng-container *ngIf="trajetChosen == null">
+          <ng-container *ngIf="!custom">
+            Filter:
+            <div class="full br">
+                <input  [(ngModel)]="sortNotFull" type="checkbox" id="sort" (change)="sort()" [disabled]="batch.loading">
+                <label for="scales">Non complet</label>
+            </div>
+            <span>A partir de:</span>
+            <div class="filterDate">
+              <input (change)="filterByDate()" id="date" type="date" [(ngModel)]="dateFilter" [min]='today'>
+            </div>
+          </ng-container>
+
+          <!-- <div class="btnCustom" (click)="custom=!custom"> -->
+          <div class="btnCustom" [routerLink]="['/contact']" >
+            <button [ngClass]="{'custom': custom}">
+              <ng-container *ngIf="!custom">
+                Commande personnalisée
+              </ng-container>
+              <ng-container *ngIf="custom">
+                Retour à la liste / annuler
+              </ng-container>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="!custom">
+        <ng-container *ngFor="let trajet of trajets; let i=index">
+          <li *ngIf="trajetChosen == null || trajetChosen == trajet" href="#commandeDescription" [@enterAnimation] (click)="trajetClick(trajet)"
+            [ngClass]="{'complet': trajet.isFull, 'selected': trajetChosen == trajet,'notSelected': trajetChosen != trajet,'lastOne': i + 1 == 3}"  class="trajet">
+          <div class="date">
+              <span>{{ trajet.date | date: 'dd' }}</span>
+              <br>
+              <span>{{ monthNames[trajet.date.getMonth()] }}</span>
+              <div class="line">
+              </div>
+          </div>
+          <div class="formCommande">
+
+            <div class="detail">
+              <div class="cercle"></div>
+              <div class="villes">
+                <span>{{ trajet.villeDepart }}</span>
+                <br>
+                <div class="clock">
+                    <fa-icon [icon]="timeIcon" ></fa-icon>
+                    {{ trajet.durationObject.hours }}h{{ trajet.durationObject.minutes }}
+                </div>
+                <span>{{ trajet.villeDestination }}</span>
+              </div>
+              <div class="cercle bot"></div>
+              <!-- <div class="truck">
+                  <fa-icon [icon]="truckIcon" size="2x"></fa-icon>
+              </div> -->
+            </div>
+            <div class="etats">
+              <div *ngIf="trajet.isFull" class="etat">Complet...</div>
+              <!-- <div class="etat">{{En atente de validation...}}</div> -->
+              <img width="150" src="../../assets/truck.png" alt="Co2 Truck...">
+            </div>
+            <div class="taille">
+              <div id="capacite">
+                <div>Capacité</div>
+                <div>
+                  {{ trajet.capacityPoids }} <small class="green">Kg</small><br>
+                  {{ trajet.capacityVolume }} <small class="green">m³</small>
+                </div>
+              </div>
+            </div>
+
+            <app-commande *ngIf="trajetChosen != null && !commande.submited" [commande]="commande"></app-commande>
+            <!-- html commande -->
+
+          </div>
+  <!--  -->
+          </li>
+        </ng-container>
+        <ng-container *ngIf="trajetChosen ==  null && batch.hasNext">
+          <div *ngIf="!(batch.loading)" class="loadingMore" data-aos="fade-up" data-aos-duration="1000" data-aos-anchor=".lastOne">
+            <div class="loadMore">
+            <small>
+              Faire défiler pour charger plus
+            </small>
+            <p class="bounce">
+              <fa-icon [icon]="loadMoreIcon" size="2x"></fa-icon>
+            </p>
+            </div>
+          </div>
+          <div *ngIf="batch.loading" class="loading">
+            <div class="lds-ripple">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="trajets.length == 0 && !batch.loading">
+          <p class="empty">
+            Aucun trajet n'est prévu...
+          </p>
+        </ng-container>
+        <ng-container *ngIf="trajets.length > 0 && !batch.loading && !batch.hasNext">
+          <p class="empty">
+            Ceci est la liste compléte des trajets programmés pour le moment...
+          </p>
+        </ng-container>
+      </ng-container>
+
+
+
+    </ul>
+  </div>
+  <div *ngIf="custom" class="customCommande">
+    <app-commande [custom]="true"></app-commande>
+  </div>
+  <div *ngIf="commande != null && commande.submited" class="recap" style="min-height: 500px">
+    <h2>Le trajet<span class="green">.</span></h2>
+    <div>
+      <button class="modifier" (click)="modifierCommande('contact')">Modifier</button>
+      <!-- blank -->
+    </div>
+    <div class="from">
+      <h3>Départ<span class="green">.</span></h3>
+      <b>Ville :</b> <span class=green> {{ commande.trajet.villeDepart }}</span>
+      <br><b>Nom d'entreprise :</b> <span class=green> {{ commande.loadingContact.name }}</span>
+      <br><b>Adresse :</b> <span class=green> {{ commande.loadingContact.adress }}</span>
+      <br><b>Contact :</b> <span class=green> {{ commande.loadingContact.telephone }}</span>
+      <br><b>Mail :</b> <span class=green> {{ commande.loadingContact.mail }}</span>
+    </div>
+    <div class="to">
+      <h3>Destination<span class="green">.</span></h3>
+      <b>Ville :</b> <span class=green> {{ commande.trajet.villeDestination }}</span>
+      <br><b>Nom d'entreprise :</b> <span class=green> {{ commande.shippingContact.name }}</span>
+      <br><b>Adresse :</b> <span class=green> {{ commande.shippingContact.adress }}</span>
+      <br><b>Contact :</b> <span class=green> {{ commande.shippingContact.telephone }}</span>
+      <br><b>Mail :</b> <span class=green> {{ commande.shippingContact.mail }}</span>
+    </div>
+    <div class="details">
+      <h3>Détails du trajet<span class="green">.</span></h3>
+      <b>Date :</b> <span class=green> {{ commande.trajet.date | date: 'short' }}</span>
+      <br><b>Durée :</b> <span class=green> {{ commande.trajet.durationObject.hours }}h{{ commande.trajet.durationObject.minutes }}min </span>
+    </div>
+    <div>
+      <!-- blank maybe maps -->
+    </div>
+    <hr>
+    <hr>
+    <h2>La commande<span class="green">.</span></h2>
+    <div>
+      <button class="modifier" (click)="modifierCommande('colisId')">Modifier</button>
+      <!-- blank -->
+    </div>
+    <div class="dimensionsReca">
+      <table id="colisRecap">
+        <tr>
+          <th>Palettes</th>
+          <th>Dimensions <span class="green">(L</span>x<span class="green">l</span>x<span class="green">h)</span></th>
+          <th>Poids <span class="green">(Kgrams)</span></th>
+          <th>Quantité</th>
+          <th>Prix <span class="green">(€)</span></th>
+        </tr>
+        <tr *ngFor="let colis of commande.colis; let i = index">
+          <td> Palette #{{ i + 1 }} </td>
+          <td>{{ colis.width }} x {{ colis.length }} x {{ colis.height }} </td>
+          <td>{{ colis.size }}</td>
+          <td>{{ colis.quantity }}</td>
+          <td>{{ colis.prix.toFixed(2) }}</td>
+        </tr>
+        <tr>
+          <td class="lastone"></td>
+          <td class="lastone"></td>
+          <td class="lastone"></td>
+          <td class="green">Total:</td>
+          <td>{{ getPrice().toFixed(2) }}€</td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <hr>
+    <h2>Identification<span class="green">.</span></h2>
+    <div>
+      <button class="modifier" (click)="modifierCommande('identite')">Modifier</button>
+    </div>
+    <div>
+    </div>
+    <div class="owner">
+      <p>
+        La commande sera enregistrée pour le compte de: <br>
+        <br>
+        &nbsp;&nbsp;<b>Entreprise :</b>&nbsp; <a class="green">{{commande.user.name}}</a><br>
+        &nbsp;&nbsp;<b>Siren :</b>&nbsp; <a class="green">{{commande.user.siren}}</a><br>
+        &nbsp;&nbsp;<b>Adresse :</b>&nbsp; <a class="green">{{commande.user.adresse}}</a><br>
+        &nbsp;&nbsp;<b>Courriel :</b>&nbsp; <a class="green">{{commande.user.mail}}</a><br>
+    </div>
+    <hr>
+    <hr>
+    <div class="pdfRecap">
+      <img (click)="generatePDf()" src="../../assets/pdf.jpg" width="170px" alt="PDF download">
+      <button (click)="generatePDf()">Télécharger le PDF récapitulatif de votre commande</button>
+    </div>
+    <div>
+      <!-- blank -->
+    </div>
+    <div>
+      <button class="valider" [disabled]="loading" (click)="valider()">
+          Valider
+        <div *ngIf="loading" class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </button>
+    </div>
+
+
+  </div>
+</div>

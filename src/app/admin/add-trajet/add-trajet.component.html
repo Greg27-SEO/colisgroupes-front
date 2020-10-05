@@ -1,0 +1,173 @@
+<h2 class="blue">Ajouter un trajet</h2>
+<p>
+  <span class="red">*</span> Champs obligatoires
+</p>
+<form class="form" [formGroup]="formTrajet">
+  <div class="ng-autocomplete">
+    <span><span class="red">*</span> Ville de départ</span><br>
+    <small class="blue"> (Veuillez préciser la ville de départ) </small><br>
+    <!-- <input historyIdentifier="villesList" historyListMaxNumber="3" [historyHeading]="'Dernierement choisis'" type="text" placeholder="Ville départ.."> -->
+    <ng-autocomplete #ngAutoCompleteStatic [data]="villes" name="name" formControlName="villeDepart"  [initialValue]=""
+      [placeHolder]="'Ville départ..'" (inputCleared)="villeCleared($event,'start')" (inputFocused)="onFocused($event,'start')" (selected)="selectEvent($event, 'start')" [searchKeyword]="'name'"
+       notFoundText="Ville non raccordée"
+      [itemTemplate]="itemStartTemplateStatic" [notFoundTemplate]="notFoundStartTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemStartTemplateStatic let-item>
+      <a [innerHTML]="item"></a>
+    </ng-template>
+
+    <ng-template #notFoundStartTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
+    <small class="red" *ngIf="formTrajet.controls['villeDepart'].errors?.valid && (formTrajet.controls['villeDepart'].touched || submitted)">
+      Veuillez saisir une ville raccordée s'il vous plait..
+    </small>
+  </div>
+  <div>
+    <span><span class="red">*</span> Ville d'arrivée</span><br>
+    <small class="blue"> (Veuillez préciser la ville d'arrivée) </small><br>
+    <!-- <input type="text" placeholder="Ville arrivée.."> -->
+    <ng-autocomplete #ngAutoCompleteStatic [data]="villes" name="name" formControlName="villeDestination"
+      [initialValue]="" (inputCleared)="villeCleared($event,'end')" (selected)="selectEvent($event, 'end')"
+      [placeHolder]="'Ville arrivée..'" (inputFocused)="onFocused($event,'end')" [searchKeyword]="'name'" notFoundText="Ville non raccordée"
+      [itemTemplate]="itemTemplateStatic" [notFoundTemplate]="notFoundTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemTemplateStatic let-item>
+      <a [innerHTML]="item"></a>
+    </ng-template>
+
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
+    <small class="red" *ngIf="formTrajet.controls['villeDestination'].errors?.valid && (formTrajet.controls['villeDestination'].touched || submitted)">
+      Veuillez saisir une ville raccordée s'il vous plait..
+    </small>
+  </div>
+  <div id="dates">
+    <span><span class="red">*</span> Date(s)</span><br>
+    <small class="blue"> (Veuillez sélectionner une ou plusieurs dates) </small><br>
+    <!-- <input type="text" placeholder="Date.."> -->
+    <ul class="dates">
+      <li *ngFor="let day of days"> {{ day | date:"dd/MM/yyyy"}} </li>
+    </ul>
+    <small class="red"
+      *ngIf="days.length == 0">
+      Aucune date sélectionnée..
+    </small>
+  </div>
+  <div class="calendar">
+    <multiple-date-picker [disableDaysBefore]="true" [matIcons]="true"  [ngModelOptions]="{standalone: true}" [(ngModel)]="days" [disallowBackPastMonths]="true">
+    </multiple-date-picker>
+  </div>
+  <div>
+    <span><span class="red">*</span> Durée</span><br>
+    <small class="blue"> (Veuillez préciser la durée que vous estimez pour le voyage) </small><br>
+    <!-- <input type="text" placeholder="Durée.."> -->
+
+  </div>
+  <div>
+    <ngx-duration-picker [(value)]="myDuration"
+      [options]="{ showWeeks: false, showYears: false, showDays: false, zeroValue: null, showMonths: false, showSeconds: true,
+      previewFormat: previewFormat }">
+    </ngx-duration-picker>
+  </div>
+  <div>
+    <span><span class="red">*</span> Capacité</span><br><br>
+    <span>Poids</span><br>
+    <small class="blue"> (Veuillez préciser la capacité maximale en Kg) </small><br>
+    <input type="text" (change)="initTranches($event)" formControlName="capacityPoids" [ngClass]="{ 'is-invalid': formTrajet.controls['capacityPoids'].errors && (formTrajet.controls['capacityPoids'].touched || submitted) }" [(ngModel)]="trajet.capacityPoids" placeholder="Capacité (en terme de poids)..">
+    <small class="red" *ngIf="formTrajet.controls['capacityPoids'].errors?.numeric && (formTrajet.controls['capacityPoids'].touched || submitted)">Vous devez saisir une valeur numérique (ex: 1000.00)</small>
+  </div>
+  <div>
+    <span> </span><br><br>
+    <span>Volume</span><br>
+    <small class="blue"> (Veuillez préciser la capacité maximale en m³) </small><br>
+    <input type="text" formControlName="capacityVolume" [ngClass]="{ 'is-invalid': formTrajet.controls['capacityVolume'].errors && (formTrajet.controls['capacityVolume'].touched || submitted) }" [(ngModel)]="trajet.capacityVolume" placeholder="Capacité (en terme de volume)..">
+    <small class="red" *ngIf="formTrajet.controls['capacityVolume'].errors?.numeric && (formTrajet.controls['capacityVolume'].touched || submitted)">Vous devez saisir une valeur numérique (ex: 1000.00)</small>
+  </div>
+  <div id="tranches" >
+    <span><span class="red">*</span> Tranches</span><br>
+    <div id="grille" *ngIf="this.trajet.capacityPoids !== null && this.trajet.capacityPoids > 0 && this.trajet.tranches != null">
+      <div>
+        <span>SMALL <strong>(1200x800)</strong> </span>
+        <ng-container *ngFor="let tranche of trajet.tranches | type:'1200x800'; index as i">
+          <input disabled  (blur)="setPoids(tranche, 'min',$event)" [value]="getPoidsPrecedent(tranche, i, '1200x800')" type="number" min="0" placeholder="Min...">
+          <input (blur)="setPoids(tranche, 'max',$event)" [min]="getPoidsPrecedent(tranche, i, '1200x800')" [max]="trajet.capacityPoids" [value]="getPoids(tranche, 'max')" type="number" placeholder="Max...">
+          <input (blur)="setPrix(tranche, $event)" type="number" min="0" placeholder="Prix...">
+        </ng-container>
+        <ng-container *ngIf="errorsTranches[0] != ''">
+          <span class="red"> {{errorsTranches[0]}} </span>
+        </ng-container>
+        
+        <div>
+          <fa-icon (click)="ajouterTranche('1200x800')" [icon]="iconPlus" size="2x" ></fa-icon>
+          <fa-icon *ngIf="sizeTranches('1200x800')" (click)="supprimerTranche('1200x800')" [icon]="minusPlus" size="2x" ></fa-icon>
+        </div>
+      </div>
+      <div>
+        <span>MEDIUM <strong>(1200x1000)</strong></span>
+        <ng-container *ngFor="let tranche of trajet.tranches | type:'1200x1000'; index as i">
+          <input disabled  (blur)="setPoids(tranche, 'min',$event)" min="0" type="number" [value]="getPoidsPrecedent(tranche, i, '1200x1000')" placeholder="Min...">
+          <input (blur)="setPoids(tranche, 'max',$event)"  [min]="getPoidsPrecedent(tranche, i, '1200x1000')" [max]="trajet.capacityPoids" [value]="getPoids(tranche, 'max')"  type="number" placeholder="Max...">
+          <input (blur)="setPrix(tranche, $event)" type="number" min="0" placeholder="Prix...">
+        </ng-container>
+        <ng-container *ngIf="errorsTranches[1] != ''">
+          <span class="red"> {{errorsTranches[1]}} </span>
+        </ng-container>
+        <div>
+          <fa-icon (click)="ajouterTranche('1200x1000')" [icon]="iconPlus" size="2x" ></fa-icon>
+          <fa-icon *ngIf="sizeTranches('1200x1000')" (click)="supprimerTranche('1200x1000')" [icon]="minusPlus" size="2x" ></fa-icon>
+        </div>
+      </div>
+      <div>
+        <span>LARGE <strong>(1200x1200)</strong></span>
+        <ng-container *ngFor="let tranche of trajet.tranches | type:'1200x1200'; index as i">
+          <input disabled (blur)="setPoids(tranche, 'min',$event)" min="0" type="number" [value]="getPoidsPrecedent(tranche,i, '1200x1200')" placeholder="Min...">
+          <input (blur)="setPoids(tranche, 'max',$event)"  [min]="getPoidsPrecedent(tranche, i, '1200x1200')" [max]="trajet.capacityPoids" [value]="getPoids(tranche, 'max')"  type="number" placeholder="Max...">
+          <input (blur)="setPrix(tranche, $event)" type="number" min="0" placeholder="Prix...">
+        </ng-container>
+        <ng-container *ngIf="errorsTranches[2] != ''">
+          <span class="red"> {{errorsTranches[2]}} </span>
+        </ng-container>
+        <div>
+          <fa-icon (click)="ajouterTranche('1200x1200')" [icon]="iconPlus" size="2x" ></fa-icon>
+          <fa-icon *ngIf="sizeTranches('1200x1200')" (click)="supprimerTranche('1200x1200')" [icon]="minusPlus" size="2x" ></fa-icon>
+        </div>
+      </div>
+    </div>
+    <p style="color:#617339" align="center" *ngIf="!trajet.capacityPoids || trajet.capacityPoids == 0 || trajet.tranches == null">
+      Veuillez préciser la capacité du trajet avant de commencer les tranches...
+    </p>
+    <p tyle="color:#617339" align="center" *ngIf="errorsTranches[3] != ''">
+      <span class="red"> {{errorsTranches[3]}} </span>
+    </p>
+  </div>
+  <!-- <hr style="border:1px dashed #4084a0; margin:15px 0px"> -->
+  <!-- <div class="estimation">
+    <span class="label">Revenu maximum</span><br>
+    <span class="blue">
+      <ng-container *ngIf="trajet.capacityPoids == null || trajet.prix == null">
+        00.00 €
+      </ng-container>
+      <ng-container *ngIf="trajet.capacityPoids != null && trajet.prix != null">
+        {{ (trajet.capacityPoids * trajet.prix).toFixed(2) }} €
+      </ng-container>
+    </span>
+  </div> -->
+  <div>
+    <!-- blank -->
+  </div>
+  <div>
+    <button (click)="addTrajet()" class="right">
+      Soumettre
+    </button>
+  </div>
+</form>
+
+<!-- <span><span class="red">*</span> Prix</span><br>
+<small class="blue"> (Veuillez préciser le prix d'un Kgram) </small><br>
+<input type="text" formControlName="prix" [ngClass]="{ 'is-invalid': formTrajet.controls['prix'].errors && (formTrajet.controls['prix'].touched || submitted) }" [(ngModel)]="trajet.prix"  placeholder="Prix..">
+<small class="red" *ngIf="formTrajet.controls['prix'].errors?.numeric && (formTrajet.controls['prix'].touched || submitted)">Vous devez saisir une valeur numérique (ex:
+  30.45)</small> -->

@@ -1,0 +1,281 @@
+.commande, .villes {
+  /* grid-area: commande; */
+  margin-top: 21px;
+  padding: 5%;
+  border-top: 1px solid gray;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 40px;
+}
+
+.villes {
+  border:0px;
+  grid-column-gap: 20px;
+}
+
+.villes input {
+  background-color: #181717;
+  border: #999 solid 2px;
+  width: calc(100% - 20px);
+  color: white;
+  padding: 10px;
+}
+
+.commande>h2 {
+  margin-top: 0px;
+}
+
+label.nbrColis {
+  place-self: center;
+}
+
+.commande>button {
+  place-self: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  /* width: 100%; */
+  color: #4084a0;
+  font-size: 1.1em;
+  border: 1px solid #4084a0;
+  background-color: #181717;
+  transition: .3s ease-in-out;
+}
+
+.commande>button:hover {
+  background-color: #4084a0;
+  border: 1px solid #4084a0;
+  color: white;
+}
+.commande input.is-invalid {
+  border: 2px solid #660606;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
+
+.commande input {
+  background-color: #181717;
+  border: #999 solid 2px;
+  width: calc(100% - 20px);
+  color: white;
+  padding: 10px;
+
+}
+
+.dimensions > form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  padding: 10px;
+}
+
+.dimensions .type {
+  grid-column: 1 / 3;
+}
+
+.dimensions .type > fa-icon {
+  position: relative;
+  left: calc(100% - 28px);
+  bottom:31px;
+  opacity: 0.8;
+}
+
+.dimensions .type > #typePalette{
+  background-color: #181717;
+  border:#999 solid 2px;
+  width: 100%;
+  color:white;
+  padding: 10px;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+}
+
+.dimensions div {
+  margin-right: 20px;
+}
+
+.dimensions .errors {
+  grid-column: 1 / 3;
+}
+
+
+
+
+
+.colisActions {
+  height: 180px;
+  place-self: center;
+  /* padding:15px; */
+  display: grid;
+  grid-template-columns: 180px auto;
+  grid-template-rows: auto auto;
+}
+
+.colisActions>.icons {
+  place-self: center;
+  margin-top: 15px;
+}
+
+.colisActions>img {
+  place-self: center;
+}
+
+.colisActions>.icons>fa-icon:first-child {
+  color: firebrick;
+}
+
+.colisActions>.icons>fa-icon {
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.colisActions .icons>fa-icon:hover {
+  transform: scale(1.4);
+}
+
+.colisActions>small {
+  position: relative;
+  left: -40px;
+  top: -20px;
+}
+
+
+.duplicate>button {
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #c7f465;
+  background-color: #181717;
+  border: 1px solid #c7f465;
+  transition: 0.2s ease-in-out;
+  text-transform: uppercase;
+}
+
+.duplicate>button:hover {
+  transform: scale(1.1);
+}
+
+.quantity {
+  font-size: 3em;
+  opacity: 0.7;
+  margin-top: 15px;
+}
+
+
+
+hr.dashed {
+  border: 1px dashed #999;
+  margin-left: 10%;
+}
+
+.commande>hr {
+  width: 100%;
+}
+
+
+.depart,
+.destination,
+.signin {
+  padding: 0px 20px;
+}
+
+.depart>h2,
+.destination>h2 {
+  margin-top: 0px;
+}
+
+.depart>input,
+.destination>input,
+.signin>input {
+  margin-bottom: 20px;
+}
+
+.signin {
+  place-self: center;
+  grid-column: 1 / 3;
+  width: 100%;
+  /* border: 1px dashed #999; */
+  /* padding: 30px; */
+  /*background: url("../../assets/signin.jpg");
+  background-size: cover;
+  padding: 20%; */
+}
+
+.signinOld {
+  place-self: center;
+  grid-column: 1 / 3;
+  width: 60%;
+  border: 1px dashed #999;
+  padding: 30px;
+  /*background: url("../../assets/signin.jpg");
+  background-size: cover;
+  padding: 20%; */
+}
+
+.wid {
+  width: 80%;
+}
+
+.signin>h2 {
+  margin-top: 0px;
+}
+
+.signin span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.connect {
+  margin-top: 50px;
+  padding: 10px 40px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  background-color: #181717;
+  border: 1px solid #33cccc;
+  color: #33cccc;
+  float: right;
+  transition: .5s ease-in-out;
+}
+
+.connect:hover {
+  background-color: #33cccc;
+  border: 1px solid #33cccc;
+  color: white
+}
+
+.connect:disabled, .connect:hover:disabled {
+  background-color: #4084a0;
+  border: 1px solid #4084a0;
+  color: white;
+  cursor: not-allowed;
+}
+
+.soumettre {
+  float: right;
+  text-transform: uppercase;
+  line-height: 2em;
+  font-weight: bold;
+  padding: 5px 20px;
+  color: #33cccc;
+  background-color: #181717;
+  border: 1px solid #33cccc;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: .2s ease-in-out;
+}
+
+.soumettre:hover {
+  color: white;
+  background-color: #33cccc
+}

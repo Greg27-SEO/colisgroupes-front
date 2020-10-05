@@ -1,0 +1,325 @@
+.layout {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  min-height: 100%;
+}
+
+button {
+  background: none;
+  border: 2px solid #4084a0;
+  font: inherit;
+  line-height: 1;
+  margin: 5px;
+  padding: 05px;
+  transition: 0.25s;
+  color: #4084a0;
+}
+
+.slideB {
+  color: #4084a0;
+}
+
+button:hover,
+button:focus {
+  color: white;
+  box-shadow: inset 14em 0 0 0 #4084a0;
+
+}
+
+.menu {
+  border-right: 8px solid #C7F465;
+}
+
+.titleContainer {
+  text-transform: uppercase;
+  padding:60px 20px;
+  text-align: center;
+  border-bottom: 1px solid #C7F465;
+}
+
+.subtitle {
+  font-size: 1.5em;
+  line-height: 0.6;
+}
+
+.title {
+  font-size: 2em;
+  line-height: 0.8;
+}
+
+.menuAction {
+  list-style: none;
+  width: 100%;
+  margin:0px;
+  padding:0px;
+  margin-bottom: 30px;
+}
+
+.menuAction li {
+  /* width: 100%; */
+  /* border-right: 8px solid #C7F465; */
+  border-bottom: 1px solid #C7F465;
+  padding:20px;
+  transition: .3s ease-in-out;
+  cursor: pointer;
+  color:white;
+  text-transform: uppercase;
+}
+
+.menuAction li.logout {
+  color:lightcoral;
+
+}
+
+.menuAction li.logout:hover {
+  color: red;
+}
+
+
+.menuAction li:hover, .active {
+  background-color: #110808;
+  color: #C7F465;
+}
+
+.administration {
+  padding: 80px;
+  background-color: white;
+  color: #110808;
+  border-bottom: 8px solid #c7f465;
+  /* height: 100em; */
+}
+
+a.green {
+  margin:20px;
+}
+
+.contenu {
+  padding:30px;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-gap:20p;
+}
+
+.list {
+  width: 100%;
+  padding:0px;
+  margin: 0;
+}
+
+.list > li {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid #110808;
+  /* grid-gap: 10px; */
+  padding:10px;
+  font-size: small;
+  cursor:pointer;
+     background-color: white;
+     background-image: linear-gradient(white 50%, rgba(255, 255, 255, 0));
+     transition: background-color 1.5s;
+}
+
+.list > li:hover {
+  background-color:rgba(175, 255, 0, 0.26);
+}
+
+.list > li > div {
+  border-right: 1px solid #C7F465;
+  padding:5px 15px;
+
+}
+
+
+/* // Color Variables ======================================
+$green: #75b800;
+$gray-light: #eef1f3;
+
+// Bar Variables ========================================
+$bar-size: 5px;
+$bar-radius: 60px;
+$bar-bg: rgba(0, 0, 0, 0.075); */
+
+
+/* // Animation =============================================
+// Edit these at random intervals to change the animation. */
+/* @keyframes loader {
+
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 30%;
+  }
+
+} */
+
+/*
+// Bar ============================================ */
+.progress-bar {
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+
+}
+
+.progress-bar span {
+    display: block;
+}
+
+.bar {
+  background: rgba(0, 0, 0, 0.075);
+  ;
+}
+
+.progress {
+  /* animation: loader 2s ease forwards; */
+  /* // Change the animation fill mode 'infinite' to 'forwards' to stop the animation from repeating. */
+  background: #C7F465;
+  color: #fff;
+  padding: 5px;
+  width:0%;
+  transition: 2s ease;
+}
+
+/* // Vertical Centering ==============================
+// You don't need this to make it work on your site.
+.progress-bar {
+  left: 50%;
+  max-width: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+} */
+
+.actions {
+  border:0px;
+  place-self: center;
+}
+
+.actions > * {
+  margin:10px;
+  cursor: pointer;
+  display: inline-block;
+  transition: .3s ease-in-out;
+
+}
+
+.actions>*:hover {
+  transform: scale(1.5);
+}
+
+.edit {
+  color: #4084a0;
+}
+
+.delete {
+  color: #ff1c49;
+}
+
+.loadingMore {
+  left:0;
+}
+
+.loadMore {
+  left:-230px;
+}
+
+.lds-ripple div {
+  border: 4px solid black;
+}
+
+.headerList {
+  margin-bottom:25px;
+  font-weight: bold;
+}
+
+.headerList > div {
+  border-right: 3px solid #C7F465;
+}
+
+.sticky {
+  position: sticky;
+  top: 20px;
+  font-size: small;
+  margin-top: 20px;
+}
+
+#date {
+  padding: 5px;
+  margin: 10px auto;
+}
+
+.filterDate {
+  text-align: center;
+}
+
+.sort {
+  /* text-align: center; */
+  margin-top: 10px;
+}
+/*
+button#reset-button.datetime-reset-button {
+  margin-left: 10px;
+  color: #4084a0;
+} */
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  /* height: 64px;
+   */
+   height: 50px;
+   margin-top: -20px;
+}
+
+.lds-ellipsis div {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #d2e1fdba;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+  left: 6px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+  left: 6px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+  left: 26px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+  left: 45px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}

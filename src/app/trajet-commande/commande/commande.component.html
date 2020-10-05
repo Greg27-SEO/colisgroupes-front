@@ -1,0 +1,305 @@
+<form [formGroup]="formTrajet" class="villes" *ngIf="custom">
+  <h2 style="margin-top:-80px">Informations sur le trajet<span class="green">.</span></h2>
+  <div>
+    <!-- blank -->
+  </div>
+  <div>
+    <span><span class="red">*</span> Ville de départ</span><br>
+    <small class="green"> (Veuillez préciser la ville de départ) </small><br>
+    <!-- <input historyIdentifier="villesList" historyListMaxNumber="3" [historyHeading]="'Dernierement choisis'" type="text" placeholder="Ville départ.."> -->
+    <ng-autocomplete #ngAutoCompleteStatic [data]="villes" name="name" formControlName="villeDepart" [initialValue]=""
+      [placeHolder]="'Ville départ..'" (inputCleared)="villeCleared($event,'start')"
+      (inputFocused)="onFocused($event,'start')" (selected)="selectEvent($event, 'start')" [searchKeyword]="'name'"
+      notFoundText="Ville non raccordée" [itemTemplate]="itemStartTemplateStatic"
+      [notFoundTemplate]="notFoundStartTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemStartTemplateStatic let-item>
+      <a [innerHTML]="item"></a>
+    </ng-template>
+
+    <ng-template #notFoundStartTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
+    <small class="red"
+      *ngIf="formTrajet.controls['villeDepart'].errors?.valid && (formTrajet.controls['villeDepart'].touched || commande.submited)">
+      Veuillez saisir une ville raccordée s'il vous plait..
+    </small>
+  </div>
+  <div>
+    <span><span class="red">*</span> Ville d'arrivée</span><br>
+    <small class="green"> (Veuillez préciser la ville d'arrivée) </small><br>
+    <!-- <input type="text" placeholder="Ville arrivée.."> -->
+    <ng-autocomplete #ngAutoCompleteStatic [data]="villes" name="name" formControlName="villeDestination"
+      [initialValue]="" (inputCleared)="villeCleared($event,'end')" (selected)="selectEvent($event, 'end')"
+      [placeHolder]="'Ville arrivée..'" (inputFocused)="onFocused($event,'end')" [searchKeyword]="'name'"
+      notFoundText="Ville non raccordée" [itemTemplate]="itemTemplateStatic" [notFoundTemplate]="notFoundTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemTemplateStatic let-item>
+      <a [innerHTML]="item"></a>
+    </ng-template>
+
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
+    <small class="red"
+      *ngIf="formTrajet.controls['villeDestination'].errors?.valid && (formTrajet.controls['villeDestination'].touched || commande.submited)">
+      Veuillez saisir une ville raccordée s'il vous plait..
+    </small>
+  </div>
+  <div id="dates">
+    <span><span class="red">*</span> Date</span><br>
+    <small class="green"> (Veuillez sélectionner une date) </small><br>
+    <!-- <input type="text" placeholder="Date.."> -->
+    <ul class="dates">
+      <li *ngFor="let day of days"> {{ day | date:"dd/MM/yyyy"}} </li>
+    </ul>
+    <small class="red" *ngIf="days.length == 0">
+      Aucune date sélectionnée..
+    </small>
+  </div>
+  <div class="calendar">
+    <multiple-date-picker  [disableDaysBefore]="true" [matIcons]="true" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="days" [disallowBackPastMonths]="true">
+    </multiple-date-picker>
+  </div>
+</form>
+<div class="commande">
+
+  <h2 id="">Palette<span class="green">.</span></h2>
+  <div>
+    <!-- blank -->
+  </div>
+  <label class="nbrColis">
+    Nombre de palettes : &nbsp;&nbsp;<span class="green">{{ commande.getNbrColis() }}</span><br>
+    Prix: &nbsp;&nbsp;<span class="green">{{ commande.getPrix().toFixed(2) }}</span> Euro
+  </label>
+  <button class="addColis" (click)="ajouterColis()">
+    <fa-icon [icon]="plusIcon"></fa-icon> &nbsp;
+    Ajouter une palette
+  </button>
+
+  <ng-container *ngFor="let colis of commande.colis; let i = index">
+    <ng-container *ngIf="colis.quantity != -1">
+      <div id="colisId" class="colisActions">
+        <img src="../../assets/colis.png" width="200px" alt="">
+        <div class="duplicate">
+          <button (click)="colis.quantity = colis.quantity + 1;">
+            <small>
+              <fa-icon [icon]="duplicateIcon"></fa-icon> &nbsp;
+              <span>Dupliquer</span>
+            </small>
+          </button>
+          <div class="quantity green">
+            <span [hidden]="colis.quantity == 1">
+              x{{colis.quantity}}
+            </span>
+          </div>
+        </div>
+        <div class="icons">
+          <fa-icon [hidden]="commande.colis.length <= 1" [icon]="timesIcon" size="2x"
+            (click)="deleteColis(i)"></fa-icon>
+          &nbsp;&nbsp;
+          <fa-icon [icon]="minusIcon" size="2x" (click)="colis.quantity = colis.quantity - 1;" class="green"
+            [hidden]="colis.quantity == 1"></fa-icon>
+        </div>
+        <small>Palette #{{ i + 1 }} <span *ngIf="colis.type && colis.type != 'null'" class="green">({{colis.type}})</span> </small>
+      </div>
+
+
+      <div class="dimensions">
+        <form [formGroup] = "formsColis[i]">
+          <div class="type">
+              <label for="type"><small><span class="red">*</span> Type de palette <span
+                    class="green">(mm)</span></small></label>
+                <select formControlName="type" name="type" id="typePalette" [(ngModel)]="colis.type">
+                  <option value="null">-- Spécifier le type de palette --</option>
+                  <option value="1200x800">1200x800</option>
+                  <option value="1200x1000">1200x1000</option>
+                  <option value="1200x1200">1200x1200</option>
+              </select>
+              <fa-icon class="green" [icon]="arrowIcon"></fa-icon>
+              <!-- <input type="number" formControlName="type" [ngClass]="{ 'is-invalid': formsColis[i].controls['width'].errors && (formsColis[i].controls['width'].touched) }" id="width" placeholder="Largueur.." [(ngModel)]="colis.width"> -->
+          </div>
+          <!-- <div class="width">
+            <label for="width"><small><span class="red">*</span> Largueur <span
+                  class="green">(cm)</span></small></label>
+            <input type="number" formControlName="width" [ngClass]="{ 'is-invalid': formsColis[i].controls['width'].errors && (formsColis[i].controls['width'].touched) }" id="width" placeholder="Largueur.." [(ngModel)]="colis.width">
+          </div>
+          <div class="length">
+            <label for="length"><small><span class="red">*</span> Longueur <span
+                  class="green">(cm)</span></small></label>
+            <input type="number" formControlName="length" [ngClass]="{ 'is-invalid': formsColis[i].controls['length'].errors && (formsColis[i].controls['length'].touched) }" id="length" placeholder="Longueur.." [(ngModel)]="colis.lenght">
+          </div> -->
+          <div class="height">
+            <label for="height"><small><span class="red">*</span> Hauteur <span
+                  class="green">(mm)</span></small></label>
+            <input type="number" formControlName="height" [ngClass]="{ 'is-invalid': formsColis[i].controls['height'].errors && (formsColis[i].controls['height'].touched) }" id="height" placeholder="Hauteur.." [(ngModel)]="colis.height">
+          </div>
+          <div class="size">
+            <label for="size"><small><span class="red">*</span> Poids <span
+                  class="green">(kg)</span></small></label>
+            <input type="number" id="size" formControlName="size" [ngClass]="{ 'is-invalid': formsColis[i].controls['size'].errors && (formsColis[i].controls['size'].touched) }" placeholder="Poids.." [(ngModel)]="colis.size">
+          </div>
+          <div *ngIf="formsColis[i].invalid || !isPoidsValid()" class="errors">
+            <small class="red" *ngIf="!isPoidsValid()">Vous pouvez pas réaliser une commande avec un poids supérieur à {{commande.trajet.capacityPoids}}Kg, nous vous conseillons de faire <a href="#"><i>une commande personnalisée..</i></a></small><br>
+            <small class="red" *ngIf="formsColis[i].controls['size'].errors?.min">Vous devez saisir un poids supérieur à 1Kgrams..</small><br>
+            <!-- <small class="red" *ngIf="formsColis[i].controls['length'].errors?.min">Vous devez saisir une valeur supérieur à 1cm..</small> -->
+            <!-- <small class="red" *ngIf="formsColis[i].controls['width'].errors?.type">Vous devez saisir une valeur numérique..</small> -->
+          </div>
+        </form>
+      </div>
+      <hr *ngIf="commande.colis.length > 1 && i != commande.colis.length - 1" class="dashed"
+        style="width: 180%">
+      <div *ngIf="commande.colis.length > 1 && i != commande.colis.length - 1"></div>
+      <!-- <hr *ngIf="commande.colis.length > 1 && i != commande.colis.length - 1" class="dashed"> -->
+    </ng-container>
+  </ng-container>
+  <!-- <div ng class="errors">
+
+    </div> -->
+  <ng-container *ngIf="validate('dimensions')">
+    <hr>
+    <hr>
+    <form [formGroup]="formLoading">
+      <div class="depart">
+        <h2 id="contact">Départ<span class="green">.</span></h2>
+        <label for="name">
+          <span class="red">*</span> Nom d'entreprise<br>
+          <small class="green">Veuillez préciser l'intitulé de votre entreprise</small>
+        </label>
+        <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': formLoading.controls['name'].errors && (formLoading.controls['name'].touched) }" [(ngModel)]="commande.loadingContact.name" id="name"
+          placeholder="Nom d'entreprise...">
+          <label for="loadingAdress">
+            <span class="red">*</span> Adresse de chargement<br>
+            <small class="green">Veuillez préciser où devons-nous recuperer les colis</small>
+          </label>
+          <input type="text" formControlName="adress" [ngClass]="{ 'is-invalid': formLoading.controls['adress'].errors && (formLoading.controls['adress'].touched) }" [(ngModel)]="commande.loadingContact.adress" id="loadingAdress"
+          placeholder="Loading adress - {{ commande.trajet.villeDepart }}..">
+          <label for="loadingTel">
+            <span class="red">*</span> Numero de téléphone<br>
+          <small class="green">Veuillez préciser qui pouvons-nous appeler au chargement</small>
+        </label>
+        <input type="text" formControlName="telephone" [ngClass]="{ 'is-invalid': formLoading.controls['telephone'].errors && (formLoading.controls['telephone'].touched) }" [(ngModel)]="commande.loadingContact.telephone" id="loadingTel"
+        placeholder="Numéro de téléphone..">
+        <label for="loadingMail">
+          Mail<br>
+          <small class="green">Veuillez préciser une adresse e-mail</small>
+        </label>
+        <input type="text" formControlName="mail" [ngClass]="{ 'is-invalid': formLoading.controls['mail'].errors && (formLoading.controls['mail'].touched) }" [(ngModel)]="commande.loadingContact.mail" id="loadingMail" placeholder="E-mail..">
+        <small class="red" *ngIf="formLoading.controls['mail'].errors?.email && formLoading.controls['mail'].touched">Veuillez
+          saisir une adresse valide..</small>
+          
+        </div>
+      </form>
+      <form [formGroup]="formShipping">
+      <div class="destination">
+        <h2>Destination<span class="green">.</span></h2>
+        <label for="name">
+          <span class="red">*</span> Nom d'entreprise<br>
+          <small class="green">Veuillez préciser l'intitulé de votre entreprise</small>
+        </label>
+        <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': formShipping.controls['name'].errors && (formShipping.controls['name'].touched) }" [(ngModel)]="commande.shippingContact.name" id="name"
+          placeholder="Nom d'entreprise...">
+        <label for="shippingAdress">
+          <span class="red">*</span> Adresse de livraison<br>
+          <small class="green">Veuillez préciser où devons-nous livrer les colis</small>
+        </label>
+        <input type="text"  formControlName="adress" [ngClass]="{ 'is-invalid': formShipping.controls['adress'].errors && (formShipping.controls['adress'].touched) }" [(ngModel)]="commande.shippingContact.adress" id="shippingAdress"
+          placeholder="Shipping adress - {{ commande.trajet.villeDestination }}..">
+        <label for="shippingTel">
+          <span class="red">*</span> Numero de téléphone<br>
+          <small class="green">Veuillez préciser qui pouvons-nous appeler à la livraison</small>
+        </label>
+        <input type="text" formControlName="telephone" [ngClass]="{ 'is-invalid': formShipping.controls['telephone'].errors && (formShipping.controls['telephone'].touched) }" [(ngModel)]="commande.shippingContact.telephone" id="shippingTel"
+          placeholder="Numéro de téléphone..">
+        <label for="shippingMail">
+          Mail<br>
+          <small class="green">Veuillez préciser une adresse e-mail</small>
+        </label>
+        <input type="email" formControlName="mail" [ngClass]="{ 'is-invalid': formShipping.controls['mail'].errors && (formShipping.controls['mail'].touched) }" [(ngModel)]="commande.shippingContact.mail" id="shippingMail"
+          placeholder="E-mail..">
+        <small class="red" *ngIf="formShipping.controls['mail'].errors?.email && formShipping.controls['mail'].touched">Veuillez saisir une adresse valide..</small>
+
+      </div>
+    </form>
+    <ng-container *ngIf="validate('contact')">
+      <hr>
+      <hr>
+      <div *ngIf="!connected" id="identit" class="signin">
+        <!-- <ng-container *ngIf="!connected">
+          <h2 *ngIf="!newUser">Connexion<a class="green">.</a></h2>
+          <h2 *ngIf="newUser">Inscription<a class="green">.</a></h2>
+          <label for="identifiant">Identifiant</label>
+          <input type="text" [(ngModel)]="commande.user.identifiant" id="identifiant" placeholder="Identifiant..">
+          <label for="mdp">Mot de passe</label>
+          <input type="password" [(ngModel)]="commande.user.password" id="mdp" placeholder="Mot de passe..">
+          <ng-container *ngIf="newUser" data-aos="fade-up" data-aos-duration="1000">
+            <label for="mdpConfirm">Confirmation du mot de passe</label>
+            <input type="password" id="mdpConfirm" placeholder="Confirmation du mot de passe..">
+            <hr style="border: 1px dashed #999">
+            <label for="Siren">Siren</label>
+            <input type="text" [(ngModel)]="commande.user.siren" id="Siren" placeholder="Siren..">
+            <label for="nameEntreprise">Nom de l'entreprise</label>
+            <input type="text" [(ngModel)]="commande.user.name" id="nameEntreprise" placeholder="Nom de l'entreprise..">
+            <label for="adresseEntreprise">Adresse de l'entreprise</label>
+            <input type="text" id="adresseEntreprise" [(ngModel)]="commande.user.adresse" placeholder="Adresse de l'entreprise..">
+            <label for="mailEntreprise">Mail</label>
+            <input type="email" [(ngModel)]="commande.user.mail" id="mailEntreprise" placeholder="Mail..">
+            <span class="green" (click)="newUser = false;"><small>Vous avez un compte ?
+                Connectez-vous..</small></span><br>
+            <button (click) = "register()" class="connect">
+
+                Inscription
+
+              <div *ngIf="loading" class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!newUser">
+            <span class="green" [routerLink]="['/message','resetpwd']" routerLinkActive="router-link-active" ><small>Mot de passe oublié ?</small></span><br>
+            <span class="green" (click)="newUser = true;"><small>Première utilisation ?
+                inscrivez-vous..</small></span><br>
+            <button (click)="login()" [disabled]="loading" class="connect">
+              Connexion
+              <div *ngIf="loading" class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </button>
+          </ng-container>
+        </ng-container> -->
+        <app-connexion  (done)="connexionReturn($event)" [redirect]="false" ></app-connexion>
+
+      </div>
+      <ng-container *ngIf="connected">
+        <div class="signinOld">
+          <p>
+            Le commande sera enregistré pour le compte de: <br>
+            <br>
+            &nbsp;&nbsp;<b>Entreprise:</b>&nbsp; <a class="green">{{commande.user.name}}</a><br>
+            &nbsp;&nbsp;<b>Siren:</b>&nbsp; <a class="green">{{commande.user.siren}}</a><br>
+            &nbsp;&nbsp;<b>Adresse:</b>&nbsp; <a class="green">{{commande.user.adresse}}</a><br>
+            &nbsp;&nbsp;<b>Courriel:</b>&nbsp; <a class="green">{{commande.user.mail}}</a><br>
+            <button class="connect" (click)="logout()">
+              Utiliser un autre compte
+            </button>
+          </p>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <div>
+    <!-- blank -->
+  </div>
+  <div *ngIf="connected && validate('contact') && validate('dimensions')">
+    <button class="soumettre" (click)="submit()">Soumettre</button>
+  </div>
+</div>

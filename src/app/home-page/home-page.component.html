@@ -1,0 +1,54 @@
+<div class="homePage">
+  <div class="calque">
+  <!-- Calque for backgroud opacity, better reading -->
+  </div>
+
+  <div class="bg">
+    <!-- Calque for backgroud -->
+    </div>
+
+  <div class="landing-page">
+    <div class="getStarted">
+      <h3 style="margin: 0; color: #33cccc; font-weight: bold;">Bienvenue chez</h3>
+      <h2 style="text-transform: uppercase;"> Colis Groupés</h2>
+      <p class="description">
+        En France, la livraison ne cesse de se développer et nous en sommes la preuve. <br>
+
+        Colis Groupés est une start-up innovante qui a choisi de réduire vos coûts en vous proposant des trajets qui vous
+        permettront d'économiser jusqu'à 50% sur vos frais de transport.
+        <br>
+      </p>
+      <hr style="opacity:0">
+      <a class="btnLister" [routerLink]="['/trajets']" >
+        Réserver dès maintenant...
+      </a>
+    </div>
+  </div>
+
+
+  <div class="wrapper">
+    <div class="banner">
+    <!-- Separator  entre landing page and contenu -->
+    </div>
+
+    <div class="contenu">
+      <div style="color:white;position: relative;top: -4.5em;width: 90%;margin: 0 auto;">
+        <h1 style="text-transform: uppercase; margin:0">Nous garantissons</h1>
+      </div>
+      <div class="valeurs">
+        <div class="valeur" data-aos="fade-up" data-aos-duration="1000"><img src="../assets/trust.png" alt="Trust/Security" ><p>Sécurité</p></div>
+        <div class="valeur" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="150"><img src="../assets/Express.png" alt="Express..."><p>Express</p></div>
+        <div class="valeur" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300"><img src="../assets/argent.png" alt="Argent..."><p>Rentabilité</p></div>
+        <div class="valeur" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="450"> <img src="../assets/map.png" alt="Suivi"><p>Suivi</p></div>
+      </div>
+
+      <app-home-steps></app-home-steps>
+      <!-- HERE HTML HOMESTEPS -->
+
+    </div>
+    <div class="imageValeur">
+      <img src="../assets/valeurs.jpg" alt="Nos valeurs...">
+    </div>
+  </div>
+</div>
+<!-- <app-contact></app-contact> -->

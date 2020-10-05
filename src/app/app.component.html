@@ -1,0 +1,44 @@
+<header *ngIf="!isAdmin()">
+  <div [routerLink]="['/']" class="logo">
+  </div>
+  <ul (mouseleave) ="menuLeave($event)" id="menu">
+    <li id="menuCommande" *ngIf="isConnected()" (mouseover)="menuHover($event)" [routerLink]="['/mescommandes']">Mes Commandes</li>
+    <li (mouseover)="menuHover($event)" [routerLink]="['/trajets']">Trajets</li>
+    <li (mouseover)="menuHover($event)" [routerLink]="['/message','whoarewe']">Qui sommes-nous</li>
+    <li (mouseover)="menuHover($event)" [routerLink]="['/contact']" >Contact</li>
+    <li id="connexion" (mouseover)="menuHover($event)" class="active">
+      <span [routerLink]="['/connexion']" *ngIf="!isConnected()">Connexion</span>
+      <span *ngIf="isConnected()">
+        <span (click)="logout()">Déconnexion </span>&nbsp;&nbsp;
+      <fa-icon [icon]="iconLogout"></fa-icon>
+      </span>
+    </li>
+  </ul>
+</header>
+
+<!-- HERE GOES HTML HOMEPAGE -->
+<router-outlet></router-outlet>
+
+<div class="footer">
+  <div *ngIf="!isAdmin()" class="footerGrid">
+    <div class="footerMenu">
+      <a target="_blank" rel="noopener noreferrer" href="https://firebasestorage.googleapis.com/v0/b/iftaar-8bc6f.appspot.com/o/ColisGroupes%2Fecgv.pdf?alt=media&token=a94b3439-788e-4d8f-b893-97963aa2f50d" class="actionFooter">Mentions légales</a>
+      <a target="_blank" rel="noopener noreferrer" href="https://firebasestorage.googleapis.com/v0/b/iftaar-8bc6f.appspot.com/o/ColisGroupes%2Fecgv.pdf?alt=media&token=a94b3439-788e-4d8f-b893-97963aa2f50d" class="actionFooter">Conditions générales</a>
+      <a  [routerLink]="['/contact']" class="actionFooter">Contactez-nous</a>
+    </div>
+    <!-- <div class="social">
+      <fa-icon [icon]="iconFacebook" size="2x" ></fa-icon>
+      <fa-icon [icon]="iconTwitter" size="2x" ></fa-icon>
+      <fa-icon [icon]="iconInsta" size="2x" ></fa-icon>
+    </div> -->
+    <div class="copyright">
+      © Copyright 2020 Colis Groupé - All Rights Reserved
+    </div>
+  </div>
+  <div class="footerline">
+    © Copyright 2020 Colis Groupé - All Rights Reserved
+  </div>
+</div>
+
+
+

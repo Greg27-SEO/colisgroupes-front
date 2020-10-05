@@ -1,0 +1,208 @@
+<div class="headerTrajet">
+  <div style="border-right:1px solid yellowgreen">
+    <small>{{trajet.date | date: 'dd/MM/yyyy'}}
+      <span class="green" *ngIf="!trajet.isFull">Ouvert</span>
+      <span style="color:red" *ngIf="trajet.isFull">Complet</span>
+    </small><br>
+    <span class="villes">
+      {{trajet.villeDepart}}
+      &nbsp;<fa-icon class="green" [icon]="iconArrow"></fa-icon>&nbsp;
+      {{trajet.villeDestination}}
+    </span><br>
+    <span class="green">Durée:</span> {{trajet.durationObject.hours}}h{{trajet.durationObject.minutes}}min<br>
+    <span class="green">Capacité (Volume | Poids):</span> {{trajet.capacityVolume}} <small class="green">m³</small> |  {{trajet.capacityPoids}} <small class="green">Kg</small> <br>
+    <!-- <span class="green">Prix:</span> {{trajet.prix.toFixed(2)}} €/Kg<br> -->
+    <div class="right etatTrajet">
+      <small *ngIf="!trajet.isFull" style="position: relative; top:6px" >
+        Déclarer comme complet
+      </small>&nbsp;
+      <small *ngIf="trajet.isFull" style="position: relative; top:6px">
+        Ouvrir
+      </small>&nbsp;
+      <label class="switch">
+        <input [(ngModel)]="trajet.isFull" (click)="switchEtat()" type="checkbox">
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class='center'>
+    <span class="right">{{((trajet.extra.valide[1] / trajet.capacityPoids)*100).toFixed(2)}}%</span> <small class="green" style="opacity: 0.3;">POIDS</small><br>
+     <div class="progress-bar">
+       <span class="bar">
+         <span class="progress"
+           [style.width]="((trajet.extra.valide[1] / trajet.capacityPoids)*100).toFixed(2)+'%'"></span>
+       </span>
+      </div>
+    <span class="right">{{(((trajet.extra.valide[2]/1000000000) / trajet.capacityVolume)*100).toFixed(2)}}%</span> <small class="green" style="opacity: 0.3;">VOLUME</small> <br>
+     <div class="progress-bar">
+       <span class="bar">
+         <span class="progress"
+           [style.width]="(((trajet.extra.valide[2]/1000000000) / trajet.capacityVolume)*100).toFixed(2)+'%'"></span>
+       </span>
+      </div>
+     <hr style="border:1px dashed greenyellow; margin:30px 0;">
+     <div class="extra">
+       <span class="green" style="font-size:xx-large">{{ +trajet.extra.valide[3] }} €</span><br>
+       <span>J{{ calculateDates(trajet) }}</span> / <span style="color:turquoise">{{(trajet.extra.valide[3] + trajet.extra.enAttente[3])}} €</span>
+     </div>
+  </div>
+</div>
+<div class="commandes">
+  <h2>Les commandes:</h2>
+  <div class="contenu">
+    <ul class="list" infiniteScroll [infiniteScrollDistance]="0" [infiniteScrollThrottle]="50"
+      (scrolled)="nextBatch()">
+      <li *ngFor="let commande of commandes; let i = index" class="commande">
+        <div class="details">
+          <div>
+            <small style="font-size: xx-small">Numéro de commande: #{{commande.id}}</small> <br>
+            <span class="green" style="font-size: xx-large">{{commande.user.name}}</span>
+          </div>
+          <div class="right user">
+            <span class="green">
+              Siren <span class="right">:</span>
+            </span>
+            <span>
+              {{commande.user.siren}}
+            </span>
+            <span class="green">
+              Mail
+              <span class="right">:</span>
+            </span>
+            <span>
+              {{commande.user.mail}}
+            </span>
+            <span class="green">
+              Adresse &nbsp;
+              <span class="right">:</span>
+            </span>
+            <span>
+              {{commande.user.adresse}}
+            </span>
+          </div>
+          <hr style="border:1px solid lightgray">
+          <hr style="border:1px solid lightgray">
+          <h3>Adresse de chargement:</h3>
+          <h3>Adresse de livraison:</h3>
+          <span class="loading">
+            {{commande.loadingContact.adress}}, {{trajet.villeDepart}}
+          </span>
+          <span class="shipping">
+            {{commande.shippingContact.adress}}, {{trajet.villeDestination}}
+          </span>
+
+          <span><span class="green">Nom d'entreprise :</span> {{commande.loadingContact.name}}</span>
+          <span><span class="green">Nom d'entreprise :</span> {{commande.shippingContact.name}}</span>
+          <span><span class="green">Téléphone :</span> {{commande.loadingContact.telephone}}</span>
+          <span><span class="green">Téléphone :</span> {{commande.shippingContact.telephone}}</span>
+          <span><span class="green">Mail :</span> {{commande.loadingContact.mail}}</span>
+          <span><span class="green">Mail :</span> {{commande.shippingContact.mail}}</span>
+          <hr style="border:1px dashed lightgray; margin-top:15px">
+          <hr style="border:1px dashed lightgray; margin-top:15px">
+          <h3>Commande:</h3>
+          <div style="text-align:end; color:turquoise">
+            <span style="font-weight:bold; font-size: x-large">{{(commande.getVolume()/1000000000).toFixed(3)}} m3</span><br>
+            <span style="font-weight:bold; font-size: x-large">{{getPoids(commande).toFixed(2)}} Kg</span><br>
+            <span style="font-weight:bold; font-size: large">{{getPrice(commande).toFixed(2)}} €</span>
+          </div>
+          <div class="colis">
+            <div>
+              <span class="green">{{ getNbrColis(commande) }}</span> palette /<span class="green">
+                 {{commande.colis.length}}</span> types de dimensions
+              <div class="collapsible right" (click)="collapse($event, i)">
+                <fa-icon [icon]="iconPlus" class="green"></fa-icon>
+                <fa-icon [icon]="iconMinus" class="green nonactive"></fa-icon>
+              </div>
+            </div>
+
+            <div [id]="'content'+i" class="content">
+              <table id="colisRecap">
+                <tr>
+                  <th>Palettes</th>
+                  <th>Dimensions <span class="green">(Lxlxh)</span></th>
+                  <th>Poids <span class="green">(Kg)</span></th>
+                  <th>Quantité</th>
+                  <th>Prix <span class="green">(€)</span></th>
+                </tr>
+
+                <tr *ngFor="let colis of commande.colis; let i = index">
+                  <td> Palette #{{ i + 1 }} </td>
+                  <td>{{ colis.width }} x {{ colis.length }} x {{ colis.height }} </td>
+                  <td>{{ colis.size }} <small class="green">({{ getTranchesPoids(commande.trajet.tranches, colis) }})</small></td>
+                  <td>{{ colis.quantity }}</td>
+                  <td>{{ (getPricePalette(commande.trajet.tranches, colis)).toFixed(2) }}</td>
+                </tr>
+
+                <tr>
+                  <td class="lastone"></td>
+                  <td class="lastone"></td>
+                  <td class="lastone"></td>
+                  <td class="green">Total:</td>
+                  <!-- <td> {{ getPrice(commande).toFixed(2) }}€</td> -->
+                  <td>{{ getPrice(commande).toFixed(2) }}€</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="slide pdf" (click)="generatePDF(commande)">Télécharger la facture</button>
+          <hr style="color:1px solid lightgray">
+          <div class="etat">
+            <span class="green">Etat:</span> <br>
+            <span>{{ getEtatsLibelle(commande)}}</span>
+          </div>
+          <div class="validateCommande" *ngIf="showButton('accept',commande)">
+            <div class="yes" (click)="workflow('accept', commande)">
+              <fa-icon [icon]="iconCheck" size="1x"></fa-icon>
+            </div>
+            <div class="no" (click)="workflow('refuse', commande)">
+              <fa-icon [icon]="iconTimes" size="1x"></fa-icon>
+            </div>
+
+          </div>
+          <!-- <button class="slide" class="accept" style="width: 50%">Accepter</button>
+          <button class="slide" class="refuse" style="width: 50%">Refuser</button> -->
+          <button class="slide" *ngIf="showButton('cancel',commande)"
+            (click)="workflow('cancel', commande)">Annuler</button>
+          <button class="slide" *ngIf="showButton('start',commande)"
+            (click)="workflow('start', commande)">Départ</button>
+          <button class="slide" *ngIf="showButton('finish',commande)"
+            (click)="workflow('finish', commande)">Livré</button>
+        </div>
+      </li>
+
+      <ng-container *ngIf="batch.hasNext">
+        <div *ngIf="!batch.loading" class="loadingMore" data-aos="fade-up" data-aos-duration="1000"
+          data-aos-anchor=".lastOne">
+          <div class="loadMore">
+            <small>
+              Faire défiler pour charger plus
+            </small>
+            <p class="bounce">
+              <fa-icon [icon]="loadMoreIcon" size="2x"></fa-icon>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="batch.loading" class="loading">
+          <div class="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="commandes.length > 0 && !batch.loading && !batch.hasNext">
+        <p class="empty">
+          Ceci est la liste compléte des commandes enregistrées pour le moment...
+        </p>
+      </ng-container>
+      <ng-container *ngIf="commandes.length == 0 && !batch.loading">
+        <p class="empty">
+          Aucune commande enregistrée pour le moment...
+        </p>
+      </ng-container>
+    </ul>
+  </div>
+</div>
+
+

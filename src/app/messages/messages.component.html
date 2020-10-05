@@ -1,0 +1,62 @@
+<div class="container">
+  <div *ngIf="action === 'success'">
+    <h2 class="title">Commande effectuée<span class="green">!</span></h2>
+    <p>Votre commande a bien été envoyée, un administrateur va la valider</p>
+    <p>Vous pouvez suivre l'état d'avancement de votre commande à partir du menu <b class="green">'Mes commandes'</b></p>
+    <p><small><span class="green">*</span>Si vous ne recevez aucun mail de notre part, veuillez vérifier vos spams.</small></p>
+  </div>
+  <div *ngIf="action === 'custom'">
+    <h2 class="title">Commande soumise<span class="green">!</span></h2>
+    <p>Votre commande personnalisée a bien été envoyée, un administrateur va l'étudier et vous donnera une réponse dans les brefs délais.</p>
+    <p>Merci d'avoir choisis Colis Groupes !</p>
+  </div>
+  <div *ngIf="action === 'resetpwd'">
+    <h2 class="title">Rénitialiser votre mot de passe<span class="green">!</span></h2>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet autem debitis ipsa, facere possimus sapiente ab
+      voluptatibus voluptate quis omnis consequatur nisi est porro at odit neque id in? Quos?</p>
+    <p>Veuillez nous renseigner votre adresse mail:</p>
+    <p class="formRecup">
+      <label class="green" for="mail">Email:</label>
+      <input type="mail" id="mail" name="mail" placeholder="Adresse mail..">
+    </p>
+  </div>
+  <div *ngIf="action === 'whoarewe'">
+    <h2 class="title">Qui sommes-nous <span class="green">?</span></h2>
+    <p>Colis groupés a été imaginé par nous, trois jeunes entrepreneurs anciennement utilisateurs du système de livraison.  Soucieux de nos bénéfices, l’amélioration du prix du transport était pour nous la clé de notre réussite.</p>
+    <p>De cette problématique est née une réflexion sur la réduction des frais de livraison, ce qui nous a amenés nous lancer en tant que prestataires chez les géants dans ce domaine.</p>
+    <p>
+      Après une étude de faisabilité économique, nous avons réussi à trouver la solution pour vous faire économiser de l’argent.
+    </p>
+    <br>
+    <h2>Comment <span class="green">?</span></h2>
+    <p>En permettant aux professionnels de regrouper leurs colis vers une même destination afin de diminuer leurs frais d’envois. C’est ce que Colis groupés met en place pour vous tout au long de l’année en proposant des destinations de livraison afin que vous puissiez anticiper vos livraisons et réduire vos coûts.</p><br>
+    <p> <span class="green">Colis Groupés</span> vous offre le temps, à vous de gagner de l’argent.</p>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+    <div class="firefly"></div>
+  </div>
+  <div *ngIf="action != 'success'
+              && action != 'resetpwd'
+              && action != 'custom'
+              && action != 'whoarewe'">
+    <h2 class="title">Page introuvable<span class="green">!</span></h2>
+    <div class="notfound">
+      <p>
+      <span class="green">404</span><br>
+        La page que vous essayez d'accéder n'existe pas...
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<!-- <div class="container wid"> -->
+<div id="identite" class="signin">
+  <h2 *ngIf="!newUser">Connexion<a class="green">.</a></h2>
+  <h2 *ngIf="newUser">Inscription<a class="green">.</a></h2>
+  <form *ngIf="!newUser"  data-aos="fade-left" data-aos-duration="500" [formGroup]="loginForm" (ngSubmit)="login()" >
+    <label for="identifiant">Identifiant</label>
+    <input type="text" formControlName="identifiant" placeholder="Identifiant.." [ngClass]="{ 'is-invalid': (submitted || flogin.identifiant.touched)  && flogin.identifiant.errors }" >
+    <label for="mdp">Mot de passe</label>
+    <input type="password"  formControlName="password" [ngClass]="{ 'is-invalid': (submitted || flogin.password.touched)  && flogin.password.errors }" id="mdp" placeholder="Mot de passe..">
+    <small *ngIf="badCreden" style="text-align: center;width: 100%" class="red"> Identifiant/Mot de passe incorrectes..</small><br>
+    <span class="green" [routerLink]="['/message','resetpwd']" routerLinkActive="router-link-active"><small>Mot
+        de passe oublié ?</small></span><br>
+    <span class="green" (click)="newUser = true; submitted=false;"><small>Première utilisation ?
+        inscrivez-vous..</small></span><br>
+    <button type="submit" [disabled]="loading" class="connect">
+      Connexion
+      <div *ngIf="loading" class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </button>
+  </form>
+  <form *ngIf="newUser" data-aos="fade-right" data-aos-duration="500" [formGroup]="registerForm" (ngSubmit)="register()">
+    <label for="identifiant">Identifiant</label>
+    <input type="text" placeholder="Identifiant.." (keyup)="usernameTaken=false;" formControlName="identifiant"
+      [ngClass]="{ 'is-invalid': (fregister.identifiant.errors || usernameTaken) && (submitted || fregister.identifiant.touched) }">
+    <small *ngIf="usernameTaken" style="text-align: center;width: 100%" class="red">Identifiant déja pris..</small><br>
+    <label for="mdp">Mot de passe</label>
+    <input type="password" formControlName="password"
+      [ngClass]="{ 'is-invalid': fregister.password.errors && (submitted || fregister.password.touched) }" id="mdp" placeholder="Mot de passe..">
+    <small class="red" *ngIf="fregister.password.errors?.minlength &&  (submitted || fregister.password.touched)">Le mot de passe doit avoir plus de 6 caractères..</small><br>
+    <label for="mdpConfirm">Confirmation du mot de passe</label>
+    <input type="password" formControlName="confirmePassword"
+      [ngClass]="{ 'is-invalid': fregister.confirmePassword.errors &&  (submitted || fregister.password.touched)  }" id="mdpConfirm" placeholder="Confirmation du mot de passe..">
+    <small class="red" *ngIf="fregister.confirmePassword.errors?.mustMatch &&  (submitted || fregister.password.touched) ">Les mots de passe saisis ne sont pas identiques..</small><br>
+    <hr style="border: 1px dashed #999">
+    <label for="Siren">Siren</label>
+    <input type="text" formControlName="siren"
+      [ngClass]="{ 'is-invalid': fregister.siren.errors &&  (submitted || fregister.siren.touched)  }" id="Siren" placeholder="Siren..">
+    <label for="nameEntreprise">Nom de l'entreprise</label>
+    <input type="text" formControlName="name"
+      [ngClass]="{ 'is-invalid': fregister.name.errors &&  (submitted || fregister.name.touched)  }" id="nameEntreprise" placeholder="Nom de l'entreprise..">
+    <label for="adresseEntreprise">Adresse de l'entreprise</label>
+    <input type="text" formControlName="adresse"
+      [ngClass]="{ 'is-invalid': fregister.adresse.errors &&  (submitted || fregister.adresse.touched)  }" id="adresseEntreprise"
+      placeholder="Adresse de l'entreprise..">
+    <label for="mailEntreprise">Mail</label>
+    <input type="text" formControlName="mail"
+      [ngClass]="{ 'is-invalid': fregister.mail.errors &&  (submitted || fregister.mail.touched)  }" id="mailEntreprise" placeholder="Mail.." email>
+    <small class="red" *ngIf="fregister.mail.errors?.email &&  (submitted || fregister.mail.touched) ">Veuillez saisir une adresse valide..</small>
+    <br>
+    <span class="green" (click)="newUser = false;submitted = false;"><small>Vous avez un compte ?
+        Connectez-vous..</small></span><br>
+
+    <button type="submit" class="connect" >
+      Inscription
+      <div *ngIf="loading" class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </button>
+
+  </form>
+  <!-- <ng-container *ngIf="!newUser">
+    <span class="green" [routerLink]="['/message','resetpwd']" routerLinkActive="router-link-active"><small>Mot
+        de passe oublié ?</small></span><br>
+    <span class="green" (click)="newUser = true;"><small>Première utilisation ?
+        inscrivez-vous..</small></span><br>
+    <button (click)="login()" [disabled]="loading" class="connect">
+      Connexion
+      <div *ngIf="loading" class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </button>
+  </ng-container> -->
+</div>
+<!-- </div> -->

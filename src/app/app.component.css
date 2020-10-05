@@ -1,0 +1,138 @@
+header {
+  /* background-color: coral; */
+  width:90%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+}
+
+.logo {
+  cursor: pointer;
+  color: white;
+  padding: 30px;
+  background-image: url('../assets/LOGO_white.png');
+  width: 150px;
+  height: 90px;
+  background-size: cover;
+  background-position: center;
+}
+
+.logoimg {
+  width: 100%;
+  height: 100%;
+}
+
+#menu {
+  /* border:3px solid red; */
+  /* background-color: #cff0ff; */
+  color:white;
+  justify-self: end;
+  font-size: small;
+}
+
+#menu>.active {
+  color:white;
+  background-color: #33cccc;
+  transition-property: color, background-color;
+  transition-duration: 1s;
+}
+
+#menu > #menuCommande {
+  border-radius:0px;
+  border-right: 1px solid #C7F465;
+}
+
+#menu > #menuCommande:hover {
+  border-right: 1px solid #33cccc;
+}
+
+#menu>li {
+  /* border:1px solid yellow; */
+  cursor: pointer;
+  transition-property: color, background-color;
+  transition-duration: 1s;
+  border-radius: 25px;
+  text-transform: uppercase;
+  display: inline;
+  padding: 15px 30px;
+  margin: 20px;
+  margin-left:0px;
+}
+
+
+/* HERE CSS HOMEPAGE */
+
+/* HERE CSS HOMESTEPS */
+
+
+.footer {
+  color:white;
+  width: 100%;
+  background-color: #33cccc;
+  justify-content: center;
+}
+
+.footerGrid {
+  padding:50px;
+  display: grid;
+  grid-row-gap: 30px;
+  grid-template-rows: 1fr 1fr;
+  justify-content: center;
+  font-weight: bold;
+  text-decoration: none;
+  text-emphasis: none;
+}
+
+.footerGrid a {
+  text-decoration: none;
+  color: white
+}
+
+.footerGrid > .footerMenu {
+  cursor:pointer;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-column-gap: 50px;
+  place-items: center;
+
+}
+
+.footerGrid>.social {
+  justify-self: center;
+}
+
+.social fa-icon {
+  cursor: pointer;
+  margin-left:30px;
+}
+.footerGrid>.copyright {
+  font-weight: normal;
+  justify-self: center;
+}
+
+.footer > .footerline {
+  padding:15px;
+  font-size: small;
+  color:lightgrey;
+  background-color: #181717;
+}
+
+/* .wrapper {
+    display: grid;
+    grid-template-columns: 70% 30%;
+
+      grid-column-gap:1em;kz
+      grid-row-gap:1em;z
+
+    grid-gap: 1em;
+  }
+
+  .wrapper>div {
+    background: #eee;
+    padding: 1em;
+  }
+
+  .wrapper>div:nth-child(odd) {
+    background: #ddd;
+  } */

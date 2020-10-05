@@ -1,0 +1,62 @@
+<div class="container">
+  <h1>Contact<span class="green">.</span></h1>
+  <p>Pour toute information ou commande personnalisée, veuillez nous contacter,<br>Nous nous ferons un plaisir de traiter votre demande du lundi au samedi de 9h à 19h30</p>
+  <div class="contact">
+    <div class="telephone">
+      <div class="social">
+            <fa-icon [icon]="iconFacebook" size="2x" ></fa-icon>
+            <fa-icon [icon]="iconTwitter" size="2x" ></fa-icon>
+            <fa-icon [icon]="iconInsta" size="2x" ></fa-icon>
+      </div>
+      <h4>Colis groupés</h4>
+      <small>
+      168 avenue Olivier d’Ormesson,<br>
+      94490 Ormesson-sur-Marne,<br>
+      FRANCE.<br>
+      <a href="tel:+33785697414">(+33) 7 85 69 74 14</a><br>
+      <a href="mailto:admin@colis-groupes.fr">admin@colis-groupes.fr</a><br>
+      </small>
+    </div>
+    <div class="map"><a href="http://maps.google.com/?q=168 avenue Olivier d’Ormesson, 94490 Ormesson-sur-Marne, FRANCE" target="_blank" rel="noopener">
+      <img alt="" src="../assets/mapadresse.png" width="100%">
+      <div class="togoole hover">
+        <a class="gotomaps text" href="http://maps.google.com/?q=168 avenue Olivier d’Ormesson, 94490 Ormesson-sur-Marne, FRANCE" target="_blank">
+          <fa-icon [icon]="iconMap" ></fa-icon>
+          Voir adresse...
+        </a>
+      </div>
+    </a>
+
+    </div>
+    <div class="formContact">
+      <div class="identite">
+        <div class="name">
+          <label for="name" class="green">Nom</label>
+          <input [(ngModel)]="mail.from" type="text" id="name" name="name" placeholder="Votre nom..">
+        </div>
+        <div class="email">
+            <label for="email" class="green">Email</label>
+            <input [(ngModel)]="mail.email" type="email" id="email" name="email" placeholder="Votre email..">
+        </div>
+      </div>
+      <div class="subject">
+        <label for="subject" class="green">Objet</label>
+        <input [(ngModel)]="mail.subject" type="text" id="subject" name="subject" placeholder="Objet.." maxlength="25">
+      </div>
+      <div class="message">
+        <label for="message" class="green">Message</label>
+        <textarea [(ngModel)]="mail.content" name="message" id="message" rows="10" placeholder="Votre Message.."></textarea>
+      </div>
+      <div *ngIf="message != ''">
+        <span class="green"> {{message}}</span>
+      </div>
+      <div class="btn-send">
+        <button class="sendbtn" (click)="sendContactMail()" type="submit" *ngIf="!loading">Send</button>
+        <div style="float: right" *ngIf="loading" class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

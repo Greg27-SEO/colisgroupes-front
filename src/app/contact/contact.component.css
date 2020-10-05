@@ -1,0 +1,151 @@
+.social {
+  float: right;
+}
+
+.social > fa-icon {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.social > fa-icon:hover {
+  padding: 5px;
+  cursor: pointer;
+  color: #C7F465;
+}
+
+.contact {
+  display: grid;
+  justify-self: stretch;
+  grid-gap: 20px;
+  margin-top:30px;
+  grid-template-columns:1fr 1fr;
+  /* grid-template-rows: 1fr 1fr; */
+}
+
+.contact h4 {
+  text-transform: uppercase;
+}
+
+.contact > .telephone {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.contact > .map {
+  padding: 15px;
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  border-top:1px solid grey;
+  position: relative;
+}
+
+.map img {
+  border:1px solid darkgray;
+  transition: .5s ease;
+}
+
+.map a {
+  text-decoration-line: none;
+  font-size:1.3em;
+}
+/* Original text overlay */
+.map .text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+/********* Overlay on hover *******/
+/* New overlay on hover */
+.map .hover {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+}
+/* New overlay appearance on hover */
+
+
+.map:hover .hover {
+opacity: 1;
+}
+
+.map:hover img {
+  opacity:0.6;
+  transform: scale(0.95);
+  transition: .5s ease;
+
+}
+
+
+
+.contact > .formContact {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-rows: repeat(4,auto);
+  padding: 40px;
+  border-left:1px solid grey;
+}
+
+.formContact label {
+  display: block;
+  line-height: 1.5em;
+  margin-bottom:5px;
+}
+
+.formContact button {
+  width: 30%;
+  background-color:transparent;
+  color:#ff5475;
+  border:2px solid #ff5475;
+  padding:15px;
+  float: right;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.formContact button:hover {
+  width: 30%;
+  background-color:#ff5475;
+  color:white;
+  border:2px solid #ff5475;
+  padding:15px;
+  float: right;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact a {
+  color:#C7F465;
+  text-decoration-color: #C7F465;
+}
+
+
+.identite {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.identite > div {
+  width: calc(100% );
+}
+
+
+.contact > .formContact input,textarea {
+  background-color: #181717;
+  border: #999 solid 2px;
+  width: calc(100% - 20px);
+  color:white;
+  padding:10px;
+}
+
+

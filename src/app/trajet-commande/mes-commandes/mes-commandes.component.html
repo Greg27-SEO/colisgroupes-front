@@ -1,0 +1,93 @@
+<div class="container">
+  <h1>Mes commandes<span class="green">.</span></h1>
+  <div class="commandes" infiniteScroll [infiniteScrollDistance]="0" [infiniteScrollThrottle]="50"
+    (scrolled)="nextBatch()">
+    <ul>
+      <ng-container *ngFor="let commande of commandes; let i = index">
+        <li [ngClass]="{'lastOne': i + 1 == 3}">
+          <div class="where br">
+            <span class="green">De:</span> {{commande.trajet.villeDepart}}
+            <hr>
+            <span class="green">Vers:</span> {{commande.trajet.villeDestination}}
+          </div>
+
+          <div class="details">
+            <span class="green">Date:</span> {{ commande.trajet.date | date: 'dd/MM/yyyy' }} <span class="right"><span class="green">Durée:
+              </span>{{ commande.trajet.durationObject.hours }}h{{ commande.trajet.durationObject.minutes }}min</span>
+            <hr>
+            <span class="green">Adresse de chargement: </span>{{ commande.loadingContact.adress }}<br>
+            <span class="green">Adresse de livraison: </span>{{ commande.shippingContact.adress }}
+            <hr>
+            <span class="green">Palettes: </span><br>
+            <span class="green">{{ getNbrColis(commande) }}</span> Palette /<span class="green"> {{commande.colis.length}}</span> types de dimensions / <span class="green"> {{ getPrice(commande) }}</span> Kgrams
+            <div class="collapsible right" (click) = "collapse($event, i)">
+              <fa-icon [icon]="iconPlus" class="green"  ></fa-icon>
+              <fa-icon [icon]="iconMinus" class="green nonactive"></fa-icon>
+            </div>
+            <div [id]="'content'+i" class="content">
+                <table id="colisRecap">
+                  <tr>
+                    <th>Palette</th>
+                    <th>Dimensions <span class="green">(Lxlxh)</span></th>
+                    <th>Poids <span class="green">(Kgrams)</span></th>
+                    <th>Quantité</th>
+                    <th>Prix <span class="green">(€)</span></th>
+                  </tr>
+
+                  <tr *ngFor="let colis of commande.colis; let i = index">
+                    <td> Palette #{{ i + 1 }} </td>
+                    <td>{{ colis.width }} x {{ colis.length }} x {{ colis.height }} </td>
+                    <td>{{ colis.size }} <small class="green">({{ getTranchesPoids(commande.trajet.tranches, colis) }})</small></td>
+                    <td>{{ colis.quantity }}</td>
+                    <td>{{(getPricePalette(commande.trajet.tranches, colis)).toFixed(2)}}</td>
+                  </tr>
+
+                  <tr>
+                    <td class="lastone"></td>
+                    <td class="lastone"></td>
+                    <td class="lastone"></td>
+                    <td class="green">Total:</td>
+                    <td> {{ getPrice(commande).toFixed(2) }}€</td>
+                  </tr>
+                </table>
+          </div>
+          </div>
+
+          <div class="actions bl">
+            <!-- <ng-container *ngIf="commande.etat == 0">
+              <button>Modifier</button><br>
+              <button>Annuler</button><br>
+            </ng-container> -->
+            <button (click) = "generatePDF(commande)" style="border-bottom: 1px solid #33cccc;">Télécharger le pdf récupulatif</button>
+            <hr>
+            <div>
+              <span class="green">Statut:</span><br>
+              {{ getEtatsLibelle(commande) }}
+            </div>
+          </div>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf="batch.hasNext">
+        <div *ngIf="!batch.loading" class="loadingMore" data-aos="fade-up" data-aos-duration="1000"
+          data-aos-anchor=".lastOne">
+          <div class="loadMore">
+            <small>
+              Faire défiler pour charger plus
+            </small>
+            <p class="bounce">
+              <fa-icon [icon]="loadMoreIcon" size="2x"></fa-icon>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="batch.loading" class="loading">
+          <div class="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </ng-container>
+
+    </ul>
+  </div>
+</div>
